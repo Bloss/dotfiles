@@ -1,13 +1,11 @@
-#### Preconditions  
+## Preconditions
 
-```bash  
-# [zsh](https://github.com/robbyrussell/oh-my-zsh)
-# [vundle](https://github.com/VundleVim/Vundle.vim)
-```
+- [zsh](https://github.com/robbyrussell/oh-my-zsh)
+- [vundle](https://github.com/VundleVim/Vundle.vim)
 
-#### Usage  
+## Usage
 
-```bash  
+```bash
 # clone
 git clone https://github.com/Bloss/dotfiles.git ~/.dotfiles
 
@@ -15,7 +13,8 @@ git clone https://github.com/Bloss/dotfiles.git ~/.dotfiles
 # ~/.dotfiles/.zsh/env.zsh
 
 # install
-chmod 755 install.sh  
+cd ~/.dotfiles
+chmod 755 install.sh
 ./install.sh
 
 # vimrc config
