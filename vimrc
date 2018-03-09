@@ -34,7 +34,10 @@ set t_Co=256  " If under tty, use 256
 
 " Display tab and trail space
 set list
+" macOS
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
+" linux
+" set listchars=eol:~,tab:>.,trail:~,extends:#,nbsp:.
 " Not display above list
 nmap <leader>l :set list!<CR>
 
