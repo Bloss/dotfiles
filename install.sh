@@ -4,12 +4,12 @@ _zshrc_=~/.dotfiles/zshrc
 _vimrc_=~/.dotfiles/vimrc
 
 __srczsh__() {
-	mv $_zshrc_ ~/.zshrc
+	cp $_zshrc_ ~/.zshrc
 	source ~/.zshrc
 }
 
 __srcvimrc__() {
-	mv $_vimrc_ ~/.vimrc
+	cp $_vimrc_ ~/.vimrc
 	source ~/.vimrc
 }
 
