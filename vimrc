@@ -1,32 +1,56 @@
-set nocompatible  " Use the vim's keyboard setting, not vi
+set nocompatible  " 使用 vim 的键盘模式
 
 if filereadable(expand("~/.vim/bundle/bvimrc.vundle"))
   source ~/.vim/bundle/vimrc.vundle
 endif
 
-set nu  " Set the line number
-syntax on  " Syntax highlighting
-"set autochdir  " Set the current dir as thr work dir
-filetype on  " File type detection
-filetype plugin on  " Loading the plugin files for specific file types
-filetype indent on  " Loading the indent file for specific file types with
+set nu  " 显示行号
+syntax on  " 语法高亮
+"set autochdir  " 设置当前的目录为工作目录
+filetype on  " 侦测文件类型
+filetype plugin on  " 载入文件类型插件
+filetype indent on  " 识别特殊文件类型的缩进插件
+
+" system
+set ttyfast      " Faster redrawing.
+set lazyredraw   " Only redraw when necessary.
+
+let mapleader = ","
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+" Fast saving <,w>
+nmap <leader>w :w!<cr>
+" :W sudo saves the file 
+" (useful for handling the permission-denied error)
+command W w !sudo tee % > /dev/null
+
+" ignore
+set wildmenu
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=.git\*,.hg\*,.svn\*,.idea\*
+else
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store
+endif
 
 " Tab and Indent
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=4 " tab 变成 4 个字符宽度 ts
+set softtabstop=4 " 删除的时候可以一次性删除四个空格 sts
+set shiftwidth=4 " 自动缩进的长度 最好和 tabstop 保持一致 sw
 set smarttab
-"set expandtab  " Use the space to instead of tab
-set autoindent  " Copy indent from current line when starting a new line
-set smartindent
-set cindent
+set expandtab  " 用空格代替 tab
+set autoindent  " 新行继承上一行的缩进
+set smartindent " 为 C 提供自动缩进
+set cindent " 使用 C 风格的缩进
 
 " Seach and Match
-set hlsearch  " Highlight the search result
-set incsearch  " Real-time search
-set ignorecase
-set smartcase
-set showmatch  " When a bracket is inserted, briefly jump to the matching one
+set hlsearch  " 高亮搜索结果
+set incsearch  " Highlight while searching with /
+set ignorecase " 搜索忽略大小写
+set smartcase " 多于一个大写保持敏感
+set showmatch  " 插入括号时，短暂地跳转到匹配的对应括号
+set wrapscan " 在搜索到文件两端时重新搜索 <nowrapscan>
 
 " Display
 set showmode  " Show the current mode
@@ -34,16 +58,16 @@ set t_Co=256  " If under tty, use 256
 
 " Display tab and trail space
 set list
-" macOS
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
-" linux
-" set listchars=eol:~,tab:>.,trail:~,extends:#,nbsp:.
 " Not display above list
 nmap <leader>l :set list!<CR>
 
 " Other
-set nobackup
-set fileencodings=utf-8,gb18030,cp936,big5 " Set the encode
+set nobackup " 去除每一次编写的 ~ 后缀备份文件
+set nowb
+set noswapfile
+
+set fileencodings=utf-8,gb18030,cp936,big5 " 设置编码
 " set pastetoggle=<F10>  " Bind `F10` to `:set paste`
 set pastetoggle=<leader>p
 set backspace=2 " same as ":set backspace=indent,eol,start" in vim7.4
@@ -53,48 +77,48 @@ set backspace=2 " same as ":set backspace=indent,eol,start" in vim7.4
 " ref: http://stackoverflow.com/questions/4608161/copy-text-out-of-vim-with-set-mouse-a-enabled
 set mouse=a  " Enable mouse
 
-set foldmethod=indent  " The kind of folding used for the current window
+set foldmethod=syntax  " The kind of folding used for the current window
 set foldlevel=99
 
 " -------------------------------------------------------------------------------
 " Enhanced
 " -------------------------------------------------------------------------------
 
-au BufRead,BufNewFile *.md set filetype=markdown  " .md default is modula2
+au BufRead,BufNewFile *.md set filetype=markdown  " .md 文件类型
 
 " Execute python file being edited with <Shift> + e:
 map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
 
 " Auto add head info
-" .py file auto add header
+" python 文件自动添加 header
 function HeaderPython()
     call setline(1, "#!/usr/bin/env python")
     call append(1,  "# -*- coding: utf-8 -*-")
-    call append(2,  "# Tanky Woo @ " . strftime('%Y-%m-%d', localtime()))
+    call append(2,  "# stickmy @ " . strftime('%Y-%m-%d', localtime()))
     normal G
     normal o
 endf
 autocmd bufnewfile *.py call HeaderPython()
 
-" .sh file auto add header
+" sh 文件自动添加 header
 function HeaderBash()
     call setline(1, "#!/bin/bash")
-    call append(1,  "# Tanky Woo @ " . strftime('%Y-%m-%d', localtime()))
+    call append(1,  "# stickmy @ " . strftime('%Y-%m-%d', localtime()))
     normal G
     normal o
 endf
 autocmd bufnewfile *.sh call HeaderBash()
 
 " ref: http://stackoverflow.com/questions/158968/changing-vim-indentation-behavior-by-file-type
-autocmd FileType html set shiftwidth=2|set expandtab
-autocmd FileType htmljinja setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
-autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
-autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType html set shiftwidth=4|set expandtab
+autocmd FileType htmljinja setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+autocmd FileType css setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType sh setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType python setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 
-" enable quick jump between keyword, such as if/endif
+" 关键字快速跳转
 runtime macros/matchit.vim
 
 " quick expand current active file's directory (not work directory)
@@ -105,7 +129,7 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 " Bind Keys
 " -------------------------------------------------------------------------------
 
-" <C-l>: quick temp disable hlsearch
+" <C-l>: 临时关闭高亮搜索
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 
@@ -119,13 +143,13 @@ filetype off                   " required!
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
+" 指定安装 vundle 插件的路径
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required!
 Plugin 'gmarik/Vundle.vim'
 
-" My Vundles here:
+" Vundles
 
 " Display
 "Plugin 'Lokaltog/vim-powerline'  " newer powerline is https://github.com/powerline/powerline
@@ -150,10 +174,11 @@ Plugin 'mitsuhiko/vim-jinja'
 " HTML & CSS
 Plugin 'mattn/emmet-vim'
 Plugin 'hail2u/vim-css3-syntax'
-
+Plugin 'posva/vim-vue' " vue syntax
 " JavaScript
 Plugin 'pangloss/vim-javascript'  " improved indentation
 Plugin 'ternjs/tern_for_vim'  " js autocompletion
+Plugin 'mxw/vim-jsx' " react-jsx
 Plugin 'Shutnik/jshint2.vim'
 
 " Go
@@ -164,12 +189,13 @@ Plugin 'sjl/badwolf'
 
 " Enhanced
 Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ervandew/supertab'
 Plugin 'Shougo/neocomplete.vim'  " neocomplete need vim --with-lua
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'  " needed with SirVer/ultisnips
+" Plugin 'SirVer/ultisnips'
+" Plugin 'honza/vim-snippets'  " needed with SirVer/ultisnips
 Plugin 'AndrewRadev/splitjoin.vim'  " transition between multiline and single-line code
 Plugin 'Tagbar'  " Tagbar is more powerful than 'taglist.vim'
 Plugin 'Auto-Pairs'  " Auto-Pairs is more useful than AutoClose
@@ -204,6 +230,11 @@ set laststatus=2   " Always show the statusline
 set encoding=utf-8 " Necessary to show Unicode glyphs
 set t_Co=256 " Explicitly tell Vim that the terminal supports 256 colors
 
+" -------------------------------------------------------------------------------
+" react-jsx extend support
+" -------------------------------------------------------------------------------
+let g:jsx_ext_required = 1
+let g:jsx_pragma_required = 1
 
 " -------------------------------------------------------------------------------
 " vim-airline/vim-airline
@@ -299,6 +330,13 @@ augroup VimCSS3Syntax
   autocmd FileType css setlocal iskeyword+=-
 augroup END
 
+
+" ----------------------------------------------------------------------------
+" auto load nerdtree
+" ----------------------------------------------------------------------------
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
 " ----------------------------------------------------------------------------
 " ternjs/tern_for_vim
 " ----------------------------------------------------------------------------
@@ -318,7 +356,17 @@ nnoremap <leader>j :JSHint<CR>
 " scrooloose/nerdtree and jistr/vim-nerdtree-tabs
 " ----------------------------------------------------------------------------
 "nmap <leader>ne :NERDTreeToggle<CR>
+let mapleader = ' '
 nmap <leader>ne :NERDTreeTabsToggle<CR>
+nmap <leader>nb :NERDTreeFromBookmark<CR>
+nmap <leader>nf :NERDTreeFind<CR>
+
+" move window 窗口间切换用 cj 替换 Command + w + j
+let mapleader = 'c'
+map <leader>j <C-W>j
+map <leader>k <C-W>k
+map <leader>h <C-W>h
+map <leader>l <C-W>l
 
 " ----------------------------------------------------------------------------
 " ervandew/supertab
@@ -482,7 +530,7 @@ if exists('+colorcolumn')
 else
     au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 endif
-hi ColorColumn ctermbg=lightgrey guibg=lightgrey  " Highlighter cc
+hi ColorColumn ctermbg=lightgrey guibg=lightgrey " Highlighter cc
 
 try
     set background=dark
@@ -498,7 +546,7 @@ endtry
 " for gui, such as macvim
 if has("gui_running")
   "set guifont=Monaco:h12
-  set guifont=Source\ Code\ Pro\ for\ Powerline:h12  " for vim-airline
+  set guifont=Source\ Code\ Pro\ for\ Powerline:h14  " for vim-airline
   set gcr=a:blinkon0  "Disable cursor blink
   set lines=60
   set columns=150
@@ -510,7 +558,7 @@ match myTODO /\(TODO\|XXX\|FIXME\)/
 
 " this options can be setted with colors, and must be put after colorscheme
 set cursorline " Highlighter the current line
-set cursorcolumn " Highlighter the vertical line"
+"set cursorcolumn " Highlighter the vertical line"
 hi search cterm=underline ctermfg=white
 
 highlight PmenuSel cterm=underline,bold ctermfg=blue
