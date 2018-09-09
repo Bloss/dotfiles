@@ -207,9 +207,6 @@ call plug#end()
 
 " ===============Plugin Option===============
 
-" =====airline=====
-let g:airline_theme='murmur'
-
 " =====Multiple cursor=====
 " Multip Cursor
 
