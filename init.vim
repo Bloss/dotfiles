@@ -86,8 +86,11 @@ set fileencodings=utf-8,gb18030,cp936,big5 " 设置文件编码
 
 " common keymap
 " split window
+" 分割屏幕的操作前缀为空格键
 let mapleader = ' '
+" 空格+ sp 横向切割
 map <leader>sp :sp<CR>
+" 空格 + spv 竖向切割
 map <leader>spv :vsp<CR>
 
 " bookmark
@@ -208,10 +211,14 @@ call plug#end()
 " ===============Plugin Option===============
 
 " =====Multiple cursor=====
+
 " Multip Cursor
 
-let g:multi_cursor_next_key='<C-n>'
+" 在 search 关键字之后, 按下 Control + n 键可以选中多个关键字, 类似 vsc 的 Command + d, 然后 cw 即可修改
+let g:multi_cursor_next_key='<C-n>' 
+" 取消最后一个选中
 let g:multi_cursor_prev_key='<C-p>'
+" skip selected
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 
@@ -250,8 +257,11 @@ let NERDTreeShowHidden=1
 " nmap <leader>ne :NERDTreeToggle<CR>
 " 文件树统一的前缀操作为 c 
 let mapleader = 'c'
+" cne 打开文件树侧栏
 nmap <leader>ne :NERDTreeToggle<CR>
+" cnb 打开 buffers
 nmap <leader>nb :NERDTreeFromBookmark<CR>
+" cnf 查找文件
 nmap <leader>nf :NERDTreeFind<CR>
 
 " move window 窗口间切换用 cj 替换 Command + w + j
