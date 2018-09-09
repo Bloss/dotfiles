@@ -71,6 +71,9 @@ autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 " Display
 set showmode " 显示当前的 mode
 set t_Co=256 " 256 color
+set background=dark " 主题的模式 light|dark
+colorscheme gruvbox " 主题 color scheme
+let g:airline_theme='gruvbox' " airline theme
 
 " other
 set rnu " 开启相对行号
@@ -160,6 +163,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'ap/vim-buftabline'
 
 Plug 'vim-airline/vim-airline-themes'
+
+" color scheme
+Plug 'flazz/vim-colorschemes'
 
 " html & css 语言扩展
 Plug 'mattn/emmet-vim'
