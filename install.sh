@@ -8,14 +8,14 @@ __srczsh__() {
 	source ~/.zshrc
 }
 
-__srcvimrc__() {
-	cp $_vimrc_ ~/.vimrc
-	source ~/.vimrc
-}
+#__srcvimrc__() {
+#	cp $_vimrc_ ~/.vimrc
+#	source ~/.vimrc
+#}
 
 __src__() {
 	__srczsh__
-	__srcvimrc__
+#	__srcvimrc__
 }
 
 if [ -d "$HOME/.dotfiles" ]; then
